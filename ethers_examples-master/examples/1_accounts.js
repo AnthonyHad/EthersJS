@@ -1,14 +1,15 @@
-const { ethers } = require("ethers");
+import { ethers } from 'ethers';
 
-const INFURA_ID = ''
-const provider = new ethers.providers.JsonRpcProvider(`https://mainnet.infura.io/v3/${INFURA_ID}`)
+const ALCHEMY_KEY = process.env.ALCHEMY_KEY;
+const provider = new ethers.providers.AlchemyProvider('mainnet', ALCHEMY_KEY);
 
-const address = '0x73BCEb1Cd57C711feaC4224D062b0F6ff338501e'
+const address = '0x73BCEb1Cd57C711feaC4224D062b0F6ff338501e';
 
-const main = async () => {
-    const balance = await provider.getBalance(address)
-    console.log(`\nETH Balance of ${address} --> ${ethers.utils.formatEther(balance)} ETH\n`)
+async function main() {
+  const balance = await provider.getBalance(address);
+  console.log(
+    `\nETH Balance of ${address} --> ${ethers.utils.formatEther(balance)} ETH\n`
+  );
 }
 
-main()
-
+main();
