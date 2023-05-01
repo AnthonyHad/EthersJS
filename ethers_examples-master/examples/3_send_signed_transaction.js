@@ -1,14 +1,14 @@
 import { ethers } from 'ethers';
 import {} from 'dotenv/config';
 const INFURA_KEY = process.env.INFURA_KEY;
-console.log(INFURA_KEY);
+
 const provider = new ethers.providers.InfuraProvider('sepolia', INFURA_KEY);
 
 const account1 = '0xbe5C866d93E277323A691BC61B4b6737aAb59DFe'; //sender
 const account2 = '0x484bE0a19e5A8314c132B9bd9724D0118d46C36f'; //receiver
 
 const privateKey1 = process.env.PRIVATE_KEY;
-console.log(privateKey1);
+
 const wallet = new ethers.Wallet(privateKey1, provider);
 
 async function main() {

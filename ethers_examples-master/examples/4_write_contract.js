@@ -1,40 +1,39 @@
-const { ethers } = require("ethers");
+import { ethers } from 'ethers';
+import {} from 'dotenv/config';
+const INFURA_KEY = process.env.INFURA_KEY;
 
-const INFURA_ID = ''
-const provider = new ethers.providers.JsonRpcProvider(`https://kovan.infura.io/v3/${INFURA_ID}`)
+const provider = new ethers.providers.InfuraProvider('sepolia', INFURA_KEY);
 
-const account1 = '' // Your account address 1
-const account2 = '' // Your account address 2
+const account1 = '0xbe5C866d93E277323A691BC61B4b6737aAb59DFe'; //sender
+const account2 = '0x484bE0a19e5A8314c132B9bd9724D0118d46C36f'; //receiver
 
-const privateKey1 = '' // Private key of account 1
-const wallet = new ethers.Wallet(privateKey1, provider)
+const privateKey1 = process.env.PRIVATE_KEY;
+
+const wallet = new ethers.Wallet(privateKey1, provider);
 
 const ERC20_ABI = [
-    "function balanceOf(address) view returns (uint)",
-    "function transfer(address to, uint amount) returns (bool)",
+  'function balanceOf(address) view returns (uint)',
+  'function transfer(address to, uint256 amount) returns(bool) ',
 ];
 
-const address = ''
-const contract = new ethers.Contract(address, ERC20_ABI, provider)
+const tokenContractAddress = '0x779877A7B0D9E8603169DdbD7836e478b4624789';
+const contract = new ethers.Contract(tokenContractAddress, ERC20_ABI, provider);
 
 const main = async () => {
-    const balance = await contract.balanceOf(account1)
+  const senderBalance = await contract.balanceOf(account1);
+  const receiverBalance = await contract.balanceOf(account2);
 
-    console.log(`\nReading from ${address}\n`)
-    console.log(`Balance of sender: ${balance}\n`)
+  console.log(`\nReading from ${tokenContractAddress}\n`);
+  console.log(`\nSender balance: ${senderBalance}\n`);
 
-    const contractWithWallet = contract.connect(wallet)
+  const contractWithWallet = contract.connect(wallet);
+  const tx = await contractWithWallet.transfer(account2, 1);
 
-    const tx = await contractWithWallet.transfer(account2, balance)
-    await tx.wait()
+  await tx.wait();
+  console.log(tx);
 
-    console.log(tx)
+  console.log(`\nSender balance: ${senderBalance}\n`);
+  console.log(`\nReiceiver balance: ${receiverBalance}\n`);
+};
 
-    const balanceOfSender = await contract.balanceOf(account1)
-    const balanceOfReciever = await contract.balanceOf(account2)
-
-    console.log(`\nBalance of sender: ${balanceOfSender}`)
-    console.log(`Balance of reciever: ${balanceOfReciever}\n`)
-}
-
-main()
+main();
