@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 
-const ALCHEMY_KEY = process.env.ALCHEMY_KEY;
-const provider = new ethers.providers.AlchemyProvider('mainnet', ALCHEMY_KEY);
+const INFURA_KEY = process.env.INFURA_KEY;
+const provider = new ethers.providers.InfuraProvider('mainnet', INFURA_KEY);
 
 const address = '0x73BCEb1Cd57C711feaC4224D062b0F6ff338501e';
 

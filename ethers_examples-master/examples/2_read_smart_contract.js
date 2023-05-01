@@ -1,13 +1,13 @@
 import { ethers } from 'ethers';
 
-const ALCHEMY_KEY = process.env.ALCHEMY_KEY;
-const provider = new ethers.providers.AlchemyProvider('mainnet', ALCHEMY_KEY);
+const INFURA_KEY = process.env.INFURA_KEY;
+const provider = new ethers.providers.InfuraProvider('mainnet', INFURA_KEY);
 
 //ethersJS allows to store ABI in an array and only store the functions we care about
 const ERC20_ABI = [
   'function name() view returns (string)',
   'function symbol() view returns (string)',
-  'function totalSupply() view returns (unint256)',
+  'function totalSupply() view returns (uint256)',
   'function balanceOf(address) view returns (uint)',
 ];
 // create a JS version of a contract to read information form it
@@ -17,11 +17,11 @@ const contract = new ethers.Contract(usdtContractAddress, ERC20_ABI, provider);
 async function main() {
   const name = await contract.name();
   const symbol = await contract.symbol();
-  // const totalSupply = await contract.totalSupply();
+  const totalSupply = await contract.totalSupply();
   console.log(`\nReading from ${usdtContractAddress}\n`);
   console.log(`Name: ${name}`);
   console.log(`Symbol: ${symbol}`);
-  // console.log(`Total Supply: ${totalSupply}\n`);
+  console.log(`Total Supply: ${totalSupply}\n`);
 
   const balance = await contract.balanceOf(
     '0x47ac0Fb4F2D84898e4D9E7b4DaB3C24507a6D503'
